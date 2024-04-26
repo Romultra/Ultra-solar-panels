@@ -11,6 +11,7 @@ def panel_normal_np(azimuth,alpha):
     vector = np.array([np.cos(azimuth), np.sin(azimuth), np.tan(alpha)])
     return(vector / np.linalg.norm(vector))
 
+
 def flux_function(azimuth_panel, alpha_panel, A0, L, B, sunpos):
     energy = 0
     
@@ -35,6 +36,46 @@ def flux_function(azimuth_panel, alpha_panel, A0, L, B, sunpos):
             
     return energy
 
+
+def flux_function_daily_prod(azimuth_panel, alpha_panel, A0, L, B, sunpos):
+    energy = 0
+    daily_energy = 0
+    hours_counter = 0
+    daily_energy_prod = []
+
+    # Creates the normal vector of the panel with the provided angles
+    panel = panel_normal_np(azimuth_panel, alpha_panel)
+
+    # sunpos = sunpos[sunpos['apparent_elevation'] > 0]
+
+    alpha = np.deg2rad(sunpos.apparent_elevation)
+    azimuth = np.deg2rad(sunpos.azimuth)
+
+    cos_azimuth = np.cos(azimuth)
+    sin_azitmuth = np.sin(azimuth)
+    tan_alpha = np.tan(alpha)
+
+    solar_flux_array = np.array([cos_azimuth, sin_azitmuth, tan_alpha])
+
+    for i in range(len(alpha)):
+        if hours_counter == 24:
+            hours_counter = 0
+            daily_energy_prod.append(daily_energy)
+            energy += daily_energy
+            daily_energy = 0
+
+        if alpha.iloc[i] > 0:
+            solar_flux = solar_flux_array[:, i]*1100 / np.linalg.norm(solar_flux_array[:, i])
+            daily_energy += max(0, np.dot(panel, solar_flux))*A0*L*B/1000
+        
+        hours_counter += 1
+        
+    daily_energy_prod.append(daily_energy)
+    energy += daily_energy
+            
+    return energy, daily_energy_prod
+
+
 def flux_function_curved(A0, r, h, sunpos):
     energy = 0
     
@@ -49,6 +90,7 @@ def flux_function_curved(A0, r, h, sunpos):
     energy = np.sum(energy_array)/1000
 
     return energy
+
 
 def prod_dtu_1year(alpha_panel=45):
     timezone = "Europe/Copenhagen"

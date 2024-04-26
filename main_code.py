@@ -40,7 +40,7 @@ while True:
             break
         
         first_time = False
-        user_input = input(f"{END}latitude out of range, please renter your {BLUE}Latitude{END} again: {BLUE}")
+        user_input = input(f"{END}latitude out of range, please reenter your {BLUE}Latitude{END} again: {BLUE}")
         latitude = float(user_input)
 
     except ( TypeError, ValueError ):
@@ -49,7 +49,7 @@ while True:
             if user_input[:6] == "python":
                 exit()
             try:
-                user_input = input(f"{END}Bad input, please renter your {BLUE}Latitude{END} again: {BLUE}")
+                user_input = input(f"{END}Bad input, please reenter your {BLUE}Latitude{END} again: {BLUE}")
                 latitude = float(user_input)
                 break
             except ( TypeError, ValueError ):
@@ -67,7 +67,7 @@ while True:
             if user_input[:6] == "python":
                 exit()
             try:
-                user_input = input(f"{END}Bad input, please renter your {CYAN}Altitude{END}54 again: {CYAN}")
+                user_input = input(f"{END}Bad input, please reenter your {CYAN}Altitude{END} again: {CYAN}")
                 altitude = float(user_input)
                 break
             except ( TypeError, ValueError ):
@@ -88,7 +88,12 @@ print(f"\r\nYou entered this latitude: {BLUE}{latitude}{END} and this altitude: 
 start_date = "2023-01-01"
 end_date = "2023-12-31"
 extra_day = "2024-02-29"
-delta_time = "Min"  # "Min", "H",
+delta_time = "H"  # "Min", "H",
+
+if latitude < 0:
+    azimuth_panel = 0
+else:
+    azimuth_panel = 180
 
 # Definition of Location object. Using the latitude and altitude entered by the user
 site = Location(
@@ -114,7 +119,7 @@ sunpos = site.get_solarposition(times)
 # Calculation of the 365 days energy production:
 for alpha in range(0,90):
     angle.append(alpha)
-    energy.append(flux_function(180, alpha, 0.5, 1, 1, sunpos))
+    energy.append(flux_function(azimuth_panel, alpha, 0.5, 1, 1, sunpos))
 
     progress += 1.095
     print(f"Computing the optimal angle, progress: {round(progress)}%", end='\r')
