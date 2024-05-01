@@ -16,6 +16,7 @@ def flux_function(azimuth_panel, alpha_panel, A0, L, B, sunpos):
     energy = 0
     
     # Creates the normal vector of the panel with the provided angles
+
     panel = panel_normal_np(azimuth_panel, alpha_panel)
 
     sunpos = sunpos[sunpos['apparent_elevation'] > 0]
@@ -28,10 +29,9 @@ def flux_function(azimuth_panel, alpha_panel, A0, L, B, sunpos):
     tan_alpha = np.tan(alpha)
 
     solar_flux_array = np.array([cos_azimuth, sin_azitmuth, tan_alpha])
-    #print(solar_flux_array)
+    
     for i in range(len(alpha)):
         solar_flux = solar_flux_array[:, i]*1100 / np.linalg.norm(solar_flux_array[:, i])
-        #print(np.dot(panel, solar_flux), solar_flux, panel)
         energy += max(0, np.dot(panel, solar_flux))*A0*L*B/1000
             
     return energy

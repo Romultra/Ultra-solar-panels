@@ -14,7 +14,7 @@ RESET_BOLD = "\033[22m"
 
 print(f"{END}")
 print(f"""
-      {PURPLE}
+      {BLUE}
  ██████╗ ██████╗ ████████╗██╗      ██████╗  █████╗ ███╗   ██╗███████╗██╗     
 ██╔═══██╗██╔══██╗╚══██╔══╝██║      ██╔══██╗██╔══██╗████╗  ██║██╔════╝██║     
 ██║   ██║██████╔╝   ██║   ██║█████╗██████╔╝███████║██╔██╗ ██║█████╗  ██║     
@@ -24,7 +24,7 @@ print(f"""
 {CYAN}-------------------------------------------------------------------------------------------------                                    
 """)
 print(f"{BOLD}Opti-panel computes the solar panel angle that generate the most energy, given a location.")
-print("Provide your decimal latitude and your altitude and get the optimal angle to install your panel !{RESET_BOLD}", "\n")
+print(f"Provide your decimal latitude and your altitude and get the optimal angle to install your panel !{RESET_BOLD}", "\n")
 print(f"-------------------------------------------------------------------------------------------------\n{END}")
 
 first_time = True
@@ -55,7 +55,7 @@ while True:
             except ( TypeError, ValueError ):
                 continue
 
-print("\n")
+
 while True:
     try:
         user_input = input(f"{END}Enter your {CYAN}Altitude{END} as a float: {CYAN}")
@@ -142,3 +142,5 @@ print(f"Computing the optimal angle, progress: 100%\n")
 
 max_pos = np.argmax(energy)
 print(f"{BOLD}The optimal angle is {CYAN}{angle[max_pos]}°{END}{BOLD} !!{RESET_BOLD}\n")
+
+input()
